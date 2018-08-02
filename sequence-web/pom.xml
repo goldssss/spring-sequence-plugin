@@ -8,7 +8,14 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>sequence-web</artifactId>
+
     <dependencies>
+        <dependency>
+            <groupId>com.goldssss</groupId>
+            <artifactId>sequence-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.goldssss</groupId>
             <artifactId>sequence-core</artifactId>
@@ -16,11 +23,11 @@
         </dependency>
         <dependency>
             <groupId>com.goldssss</groupId>
-            <artifactId>sequence-service</artifactId>
+            <artifactId>sequence-config</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-    <artifactId>sequence-web</artifactId>
+
     <build>
         <plugins>
             <plugin>
