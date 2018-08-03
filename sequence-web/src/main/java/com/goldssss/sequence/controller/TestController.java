@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
@@ -23,12 +24,13 @@ public class TestController {
     private ServiceDemo3 serviceDemo3;
 
     @RequestMapping("/")
-    public ConcurrentLinkedQueue<SequenceMethodDTO> test(){
+    public List<SequenceMethodDTO> test(){
         SequenceMethodDTO sequenceMethodDTO = new SequenceMethodDTO();
         serviceDemo1.serviceDemo1();
-        serviceDemo2.serviceDemo2_1();
         serviceDemo2.serviceDemo2();
+        serviceDemo2.serviceDemo2_1("str");
         serviceDemo3.serviceDemo3();
-        return SequenceMethodAspect.sequenceMethodDTOList;
+        serviceDemo2.serviceDemo2_2("str");
+        return null;
     }
 }

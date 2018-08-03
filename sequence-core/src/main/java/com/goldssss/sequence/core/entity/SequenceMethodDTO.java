@@ -1,5 +1,7 @@
 package com.goldssss.sequence.core.entity;
 
+import java.util.List;
+
 public class SequenceMethodDTO {
 
     private SequenceMethodStatusEnum sequenceMethodStatusEnum;
@@ -8,7 +10,13 @@ public class SequenceMethodDTO {
 
     private String methodName;
 
-    private Class[] paramsType;
+    private String longName;
+
+    private String shortName;
+
+    private List<Class> paramsType;
+
+    private Class returnType;
 
     public SequenceMethodStatusEnum getSequenceMethodStatusEnum() {
         return sequenceMethodStatusEnum;
@@ -34,11 +42,35 @@ public class SequenceMethodDTO {
         this.methodName = methodName;
     }
 
-    public Class[] getParamsType() {
+    public List<Class> getParamsType() {
         return paramsType;
     }
 
-    public void setParamsType(Class[] paramsType) {
+    public void setParamsType(List<Class> paramsType) {
         this.paramsType = paramsType;
+    }
+
+    public Class getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(Class returnType) {
+        this.returnType = returnType;
+    }
+
+    public String getLongName() {
+        return longName;
+    }
+
+    public void setLongName(String longName) {
+        this.longName = longName;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }
