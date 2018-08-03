@@ -76,7 +76,12 @@ public class SequenceMethodAspect {
 
     private String convermethodStackToMarkDown(List<SequenceMethodDTO> sequenceMethodDTOList){
         StringBuilder mkString = new StringBuilder("```sequence\n");
+        //方法调用入口
         methodInvokeStack.push(sequenceMethodDTOList.get(0));
+        mkString.append("title:").append(methodInvokeStack.peek().getShortName())
+                .append(".").append(methodInvokeStack.peek().getMethodName())
+                .append("(").append(this.handleParams(methodInvokeStack.peek().getParamsType()))
+                .append(")").append("\n");
         for (int index=1;index<sequenceMethodDTOList.size();index++){
             //将要执行的方法
             SequenceMethodDTO sequenceMethodDTO = sequenceMethodDTOList.get(index);
