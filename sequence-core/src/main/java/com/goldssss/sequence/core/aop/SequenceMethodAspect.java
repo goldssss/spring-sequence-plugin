@@ -2,26 +2,25 @@ package com.goldssss.sequence.core.aop;
 
 import com.goldssss.sequence.core.entity.SequenceMethodDTO;
 import com.goldssss.sequence.core.entity.SequenceMethodStatusEnum;
-import org.apache.commons.collections4.CollectionUtils;
-import org.aspectj.lang.JoinPoint;
+import org.apache.commons.collections.CollectionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Component("sequenceMethodAspect")
 @Aspect
 public class SequenceMethodAspect {
 
+    /**
+     * aop获取方法调用关系
+     */
     private ThreadLocal<List<SequenceMethodDTO>> listThreadLocal = new ThreadLocal<>();
     /**
      * 方法栈
      */
-    private Stack<SequenceMethodDTO> currentInvokeStack = new Stack();
     private Stack<SequenceMethodDTO> methodInvokeStack = new Stack<>();
-    private Integer returnCount = 0;
 
     @Pointcut("execution(* com.goldssss.sequence..*(..)) && !bean(sequenceMethodAspect)")
     private void pointCut() {}
@@ -46,6 +45,8 @@ public class SequenceMethodAspect {
         methodBefore.setClassName(joinPoint.getSignature().getDeclaringTypeName());
         methodBefore.setMethodName(joinPoint.getSignature().getName());
         methodBefore.setLongName(joinPoint.getSignature().toLongString());
+        //截取className
+        methodBefore.setShortName(joinPoint.getSignature().getDeclaringTypeName().substring(joinPoint.getSignature().getDeclaringTypeName().lastIndexOf(".")+1));
         List<Class> paramsTypeList = new ArrayList<>();
         for (Object o :joinPoint.getArgs()){
             paramsTypeList.add(o.getClass());
@@ -61,6 +62,7 @@ public class SequenceMethodAspect {
         methodAfter.setClassName(joinPoint.getSignature().getDeclaringTypeName());
         methodAfter.setMethodName(joinPoint.getSignature().getName());
         methodAfter.setLongName(joinPoint.getSignature().toLongString());
+        methodAfter.setShortName(joinPoint.getSignature().getDeclaringTypeName().substring(joinPoint.getSignature().getDeclaringTypeName().lastIndexOf(".")+1));
         methodAfter.setReturnType(result==null?null:result.getClass());
         sequenceMethodDTOList.add(methodAfter);
         listThreadLocal.set(sequenceMethodDTOList);
@@ -74,62 +76,55 @@ public class SequenceMethodAspect {
 
     private String convermethodStackToMarkDown(List<SequenceMethodDTO> sequenceMethodDTOList){
         StringBuilder mkString = new StringBuilder("```sequence\n");
-        methodInvokeStackPeek(sequenceMethodDTOList.get(0));
-        for (int index=0;index<sequenceMethodDTOList.size();index++){
-            //当前方法
+        methodInvokeStack.push(sequenceMethodDTOList.get(0));
+        for (int index=1;index<sequenceMethodDTOList.size();index++){
+            //将要执行的方法
             SequenceMethodDTO sequenceMethodDTO = sequenceMethodDTOList.get(index);
-            //当前方法执行后执行的方法
+            //用于判断后续还有没有方法执行，结束循环
             SequenceMethodDTO nextSequenceMethodDTO = (index==sequenceMethodDTOList.size()-1)?null:sequenceMethodDTOList.get(index+1);
             if (nextSequenceMethodDTO==null){ break;}
-            this.push(sequenceMethodDTO);
-            mkString.append(this.peek().getClassName()).append("->");
-            this.push(methodInvokeStackPeek(nextSequenceMethodDTO));
-            mkString.append(this.peek().getClassName()).append(":").append(this.peek().getMethodName()).append("\n");
-            this.pop();
+            if (methodInvokeStack.contains(sequenceMethodDTO)){
+                //获取调用链返回值类型
+                methodInvokeStack.push(sequenceMethodDTO);
+                String returnType =this.handleResult(methodInvokeStack.peek().getReturnType());
+                methodInvokeStack.pop();
+                mkString.append(methodInvokeStack.peek().getShortName()).append("-->");
+                methodInvokeStack.pop();
+                mkString.append(methodInvokeStack.peek().getShortName()).append(":")
+                        .append(returnType).append("\n");
+            }else{
+                mkString.append(methodInvokeStack.peek().getShortName()).append("->");
+                methodInvokeStack.push(sequenceMethodDTO);
+                mkString.append(methodInvokeStack.peek().getShortName()).append(":")
+                        .append(methodInvokeStack.peek().getMethodName())
+                        .append("(").append(this.handleParams(methodInvokeStack.peek().getParamsType()))
+                        .append(")").append("\n");
+            }
         }
         listThreadLocal.remove();
-        currentInvokeStack.clear();
+        methodInvokeStack.clear();
         return mkString.append("```\n").toString();
     }
 
-    /**
-     * 当前方法
-     * @return
-     */
-    private SequenceMethodDTO pop(){
-       return currentInvokeStack.pop();
-    }
-
-    /**
-     * 入栈
-     * @param sequenceMethodDTO
-     */
-    private void push(SequenceMethodDTO sequenceMethodDTO){
-        currentInvokeStack.push(sequenceMethodDTO);
-    }
-
-    /**
-     * 栈顶方法
-     * @return
-     */
-    private SequenceMethodDTO peek(){
-        return currentInvokeStack.peek();
-    }
-
-    private SequenceMethodDTO currentMethod(SequenceMethodDTO sequenceMethodDTO){
-        return methodInvokeStack.pop();
-    }
-
-    /**
-     * 方法调用链，未执行完的方法栈,返回栈顶方法
-     * @param sequenceMethodDTO
-     * @return
-     */
-    private SequenceMethodDTO methodInvokeStackPeek(SequenceMethodDTO sequenceMethodDTO){
-        if (SequenceMethodStatusEnum.RETURN.equals(sequenceMethodDTO.getSequenceMethodStatusEnum())){
-            return methodInvokeStack.pop();
-        }else {
-            return methodInvokeStack.push(sequenceMethodDTO);
+    private String handleParams(List<Class> classList){
+        StringBuilder params = new StringBuilder("");
+        if (CollectionUtils.isNotEmpty(classList)){
+            for (int i=0;i<classList.size();i++){
+                Class clazz = classList.get(i);
+                params.append(clazz.getName().substring(clazz.getName().lastIndexOf(".")+1));
+                if (classList.size()!=1 && i!=classList.size()-1){
+                    params.append(",");
+                }
+            }
         }
+        return params.toString();
+    }
+
+    private String handleResult(Class clazz){
+        StringBuilder result = new StringBuilder("");
+        if (clazz!=null){
+            result.append(clazz.getName().substring(clazz.getName().lastIndexOf(".")+1));
+        }
+        return result.toString();
     }
 }

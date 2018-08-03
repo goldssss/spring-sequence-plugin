@@ -8,11 +8,11 @@ public class ServiceDemo2 {
         
     }
 
-    public void serviceDemo2_1(String str){
-
+    public Double serviceDemo2_1(String str){
+        return null;
     }
 
     public String serviceDemo2_2(String str){
-        return null;
+        return "aa";
     }
 }

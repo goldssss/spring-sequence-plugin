@@ -1,6 +1,7 @@
 package com.goldssss.sequence.core.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SequenceMethodDTO {
 
@@ -72,5 +73,22 @@ public class SequenceMethodDTO {
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SequenceMethodDTO that = (SequenceMethodDTO) o;
+        return Objects.equals(className, that.className) &&
+                Objects.equals(methodName, that.methodName) &&
+                Objects.equals(longName, that.longName) &&
+                Objects.equals(shortName, that.shortName);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(className, methodName, longName, shortName, paramsType, returnType);
     }
 }

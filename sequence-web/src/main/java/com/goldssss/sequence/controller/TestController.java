@@ -26,10 +26,10 @@ public class TestController {
     @RequestMapping("/")
     public List<SequenceMethodDTO> test(){
         SequenceMethodDTO sequenceMethodDTO = new SequenceMethodDTO();
+        serviceDemo3.serviceDemo3();
         serviceDemo1.serviceDemo1();
         serviceDemo2.serviceDemo2();
         serviceDemo2.serviceDemo2_1("str");
-        serviceDemo3.serviceDemo3();
         serviceDemo2.serviceDemo2_2("str");
         return null;
     }
