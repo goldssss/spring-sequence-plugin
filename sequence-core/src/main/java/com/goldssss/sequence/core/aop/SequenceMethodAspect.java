@@ -1,5 +1,6 @@
 package com.goldssss.sequence.core.aop;
 
+import com.goldssss.sequence.core.entity.SequenceContext;
 import com.goldssss.sequence.core.entity.SequenceMethodDTO;
 import com.goldssss.sequence.core.entity.SequenceMethodStatusEnum;
 import org.apache.commons.collections.CollectionUtils;
@@ -68,12 +69,22 @@ public class SequenceMethodAspect {
         listThreadLocal.set(sequenceMethodDTOList);
     }
 
+    /**
+     * 判断是否所有方法执行完毕
+     * @param sequenceMethodDTOList
+     * @return
+     */
     private Boolean isMethodReturn(List<SequenceMethodDTO> sequenceMethodDTOList){
         return  sequenceMethodDTOList.get(0).getSequenceMethodStatusEnum().equals(SequenceMethodStatusEnum.INVOKE)
                 && sequenceMethodDTOList.get(sequenceMethodDTOList.size()-1).getSequenceMethodStatusEnum().equals(SequenceMethodStatusEnum.RETURN)
                 &&sequenceMethodDTOList.get(0).getLongName().equals(sequenceMethodDTOList.get(sequenceMethodDTOList.size()-1).getLongName());
     }
 
+    /**
+     * 方法堆栈信息转markDown信息
+     * @param sequenceMethodDTOList
+     * @return
+     */
     private String convermethodStackToMarkDown(List<SequenceMethodDTO> sequenceMethodDTOList){
         StringBuilder mkString = new StringBuilder("```sequence\n");
         //方法调用入口
@@ -111,6 +122,11 @@ public class SequenceMethodAspect {
         return mkString.append("```\n").toString();
     }
 
+    /**
+     * 处理方法参数列表
+     * @param classList
+     * @return
+     */
     private String handleParams(List<Class> classList){
         StringBuilder params = new StringBuilder("");
         if (CollectionUtils.isNotEmpty(classList)){
@@ -125,11 +141,20 @@ public class SequenceMethodAspect {
         return params.toString();
     }
 
+    /**
+     * 处理方法返回类型
+     * @param clazz
+     * @return
+     */
     private String handleResult(Class clazz){
         StringBuilder result = new StringBuilder("");
         if (clazz!=null){
             result.append(clazz.getName().substring(clazz.getName().lastIndexOf(".")+1));
         }
         return result.toString();
+    }
+
+    private SequenceContext converSequenceContext(){
+        return null;
     }
 }
