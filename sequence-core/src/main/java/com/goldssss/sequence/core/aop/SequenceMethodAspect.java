@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component("sequenceMethodAspect")
 @Aspect
+@Component
 public class SequenceMethodAspect {
 
     /**
@@ -23,10 +23,10 @@ public class SequenceMethodAspect {
      */
     private Stack<SequenceMethodDTO> methodInvokeStack = new Stack<>();
 
-    @Pointcut("execution(* com.goldssss.sequence..*(..)) && !bean(sequenceMethodAspect)")
+    @Pointcut("execution(* com.goldssss.sequence..*(..)) && !execution(* com.goldssss.sequence.core..*(..))")
     private void pointCut() {}
 
-    @Around("pointCut()")
+    @Around("pointCut();defaultExclude()")
     public void methdoAround(ProceedingJoinPoint joinPoint) throws Throwable {
         List<SequenceMethodDTO> sequenceMethodDTOList= listThreadLocal.get();
         if (CollectionUtils.isEmpty(sequenceMethodDTOList)){
