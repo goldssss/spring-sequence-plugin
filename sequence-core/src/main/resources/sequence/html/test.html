@@ -1,0 +1,28 @@
+<script src="../js/webfont.js"></script>
+<script src="../js/snap.svg-min.js"></script>
+<script src="../js/underscore-min.js"></script>
+<script src="../js/sequence-diagram-min.js"></script>
+<script src="../js/jquery-1.4.1.min.js"></script>
+<html>
+<div id="sequenceContext" hidden="hidden">
+    title:TestController.test()
+    TestController->ServiceDemo3:serviceDemo3()
+    ServiceDemo3->ServiceDemo4:serviceDemo4(Long,Integer)
+    ServiceDemo4->ServiceDemo3:
+    ServiceDemo3->TestController:String
+    TestController->ServiceDemo1:serviceDemo1()
+    ServiceDemo1->TestController:
+    TestController->ServiceDemo2:serviceDemo2()
+    ServiceDemo2->TestController:
+    TestController->ServiceDemo2:serviceDemo2_1(String)
+    ServiceDemo2->TestController:
+    TestController->ServiceDemo2:serviceDemo2_2(String)
+    ServiceDemo2->TestController:String
+</div>
+<div id="diagram">
+</div>
+<script>
+    var diagram = Diagram.parse($("#sequenceContext").html());
+    diagram.drawSVG("diagram", {theme: 'hand'});
+</script>
+</html>
