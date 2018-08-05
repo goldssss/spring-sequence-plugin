@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>${Title}</title>
+</head>
+<body>
+<textarea id="sequenceContext" hidden="hidden">
+    ${sequenceContext}
+</textarea>
+<div id="diagram">
+</div>
+<script>
+    var diagram = Diagram.parse($("#sequenceContext").val());
+    diagram.drawSVG("diagram", {theme: 'simple'});
+</script>
+</body>
+</html>

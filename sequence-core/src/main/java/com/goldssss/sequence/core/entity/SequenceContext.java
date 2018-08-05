@@ -8,9 +8,13 @@ public class SequenceContext {
 
     private String title;
 
+    private String clazzName;
+
+    private String methodName;
+
     private String messageContext;
 
-    private String suffix;
+    private String paramsTypes;
 
     public String getTitle() {
         return title;
@@ -28,11 +32,27 @@ public class SequenceContext {
         this.messageContext = messageContext;
     }
 
-    public String getSuffix() {
-        return suffix;
+    public String getClazzName() {
+        return clazzName;
     }
 
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
+    public void setClazzName(String clazzName) {
+        this.clazzName = clazzName;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+    public String getParamsTypes() {
+        return paramsTypes;
+    }
+
+    public void setParamsTypes(String paramsTypes) {
+        this.paramsTypes = paramsTypes;
     }
 }

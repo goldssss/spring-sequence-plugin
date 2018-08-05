@@ -6,6 +6,7 @@ import com.goldssss.sequence.service.ServiceDemo2;
 import com.goldssss.sequence.service.ServiceDemo3;
 import com.goldssss.sequence.core.entity.SequenceMethodDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,13 +25,13 @@ public class TestController {
     private ServiceDemo3 serviceDemo3;
 
     @RequestMapping("/")
-    public List<SequenceMethodDTO> test(){
+    public String test(){
         SequenceMethodDTO sequenceMethodDTO = new SequenceMethodDTO();
         serviceDemo3.serviceDemo3();
         serviceDemo1.serviceDemo1();
         serviceDemo2.serviceDemo2();
         serviceDemo2.serviceDemo2_1("str");
         serviceDemo2.serviceDemo2_2("str");
-        return null;
+        return "test";
     }
 }

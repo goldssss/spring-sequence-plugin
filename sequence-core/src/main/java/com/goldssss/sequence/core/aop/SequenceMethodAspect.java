@@ -1,5 +1,6 @@
 package com.goldssss.sequence.core.aop;
 
+import com.goldssss.sequence.core.cache.SequenceCache;
 import com.goldssss.sequence.core.entity.SequenceContext;
 import com.goldssss.sequence.core.entity.SequenceMethodDTO;
 import com.goldssss.sequence.core.entity.SequenceMethodStatusEnum;
@@ -23,10 +24,11 @@ public class SequenceMethodAspect {
      */
     private Stack<SequenceMethodDTO> methodInvokeStack = new Stack<>();
 
+
     @Pointcut("execution(* com.goldssss.sequence..*(..)) && !execution(* com.goldssss.sequence.core..*(..))")
     private void pointCut() {}
 
-    @Around("pointCut();defaultExclude()")
+    @Around("pointCut()")
     public void methdoAround(ProceedingJoinPoint joinPoint) throws Throwable {
         List<SequenceMethodDTO> sequenceMethodDTOList= listThreadLocal.get();
         if (CollectionUtils.isEmpty(sequenceMethodDTOList)){
@@ -36,7 +38,7 @@ public class SequenceMethodAspect {
         Object result = joinPoint.proceed();
         this.methodAfter(joinPoint,sequenceMethodDTOList,result);
         if(isMethodReturn(sequenceMethodDTOList)){
-            System.out.println(this.convermethodStackToMarkDown(sequenceMethodDTOList));
+            this.convermethodStackToTreeMap(sequenceMethodDTOList);
         }
     }
 
@@ -85,14 +87,21 @@ public class SequenceMethodAspect {
      * @param sequenceMethodDTOList
      * @return
      */
-    private String convermethodStackToMarkDown(List<SequenceMethodDTO> sequenceMethodDTOList){
-        StringBuilder mkString = new StringBuilder("```sequence\n");
+    private void convermethodStackToTreeMap(List<SequenceMethodDTO> sequenceMethodDTOList){
+        StringBuffer mkString = new StringBuffer();
+        StringBuffer title = new StringBuffer();
+        SequenceContext sequenceContext = new SequenceContext();
         //方法调用入口
         methodInvokeStack.push(sequenceMethodDTOList.get(0));
-        mkString.append("title:").append(methodInvokeStack.peek().getShortName())
+        title.append(methodInvokeStack.peek().getShortName())
                 .append(".").append(methodInvokeStack.peek().getMethodName())
                 .append("(").append(this.handleParams(methodInvokeStack.peek().getParamsType()))
-                .append(")").append("\n");
+                .append(")");
+        sequenceContext.setTitle(title.toString());
+        sequenceContext.setParamsTypes(this.handleParams(methodInvokeStack.peek().getParamsType()));
+        sequenceContext.setClazzName(methodInvokeStack.peek().getShortName());
+        sequenceContext.setMethodName(methodInvokeStack.peek().getMethodName());
+        mkString.append("title:").append(title).append("\n");
         for (int index=1;index<sequenceMethodDTOList.size();index++){
             //将要执行的方法
             SequenceMethodDTO sequenceMethodDTO = sequenceMethodDTOList.get(index);
@@ -117,9 +126,10 @@ public class SequenceMethodAspect {
                         .append(")").append("\n");
             }
         }
+        sequenceContext.setMessageContext(mkString.toString());
+        SequenceCache.sequenceContextTreeMap.put(sequenceContext.getTitle(),sequenceContext);
         listThreadLocal.remove();
         methodInvokeStack.clear();
-        return mkString.append("```\n").toString();
     }
 
     /**

@@ -4,7 +4,7 @@
 <script src="../js/sequence-diagram-min.js"></script>
 <script src="../js/jquery-1.4.1.min.js"></script>
 <html>
-<div id="sequenceContext" hidden="hidden">
+<textarea id="sequenceContext" hidden="hidden">
     title:TestController.test()
     TestController->ServiceDemo3:serviceDemo3()
     ServiceDemo3->ServiceDemo4:serviceDemo4(Long,Integer)
@@ -18,11 +18,11 @@
     ServiceDemo2->TestController:
     TestController->ServiceDemo2:serviceDemo2_2(String)
     ServiceDemo2->TestController:String
-</div>
+</textarea>
 <div id="diagram">
 </div>
 <script>
-    var diagram = Diagram.parse($("#sequenceContext").html());
-    diagram.drawSVG("diagram", {theme: 'hand'});
+    var diagram = Diagram.parse($("#sequenceContext").val());
+    diagram.drawSVG("diagram", {theme: 'simple'});
 </script>
 </html>
