@@ -10,7 +10,7 @@ public class ServiceDemo3 {
     private ServiceDemo4 serviceDemo4;
 
     public String serviceDemo3(){
-        serviceDemo4.serviceDemo4(1L,1);
+        serviceDemo4.serviceDemo4(null,1);
         return "aaaa";
     }
 }

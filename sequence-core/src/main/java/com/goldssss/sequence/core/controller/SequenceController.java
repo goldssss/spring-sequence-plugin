@@ -18,7 +18,7 @@ public class SequenceController {
                     .append(SequenceCache.sequenceContextTreeMap.get(key).getClazzName())
                     .append("/").append(SequenceCache.sequenceContextTreeMap.get(key).getMethodName())
                     .append("(").append(SequenceCache.sequenceContextTreeMap.get(key).getParamsTypes()).append(")")
-                    .append("\">").append(key).append("</a>");
+                    .append("\">").append(key).append("</a>").append("</br>");
         }
         sb.append("</div>");
         return sb.toString();

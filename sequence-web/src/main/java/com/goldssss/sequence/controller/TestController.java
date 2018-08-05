@@ -8,6 +8,7 @@ import com.goldssss.sequence.core.entity.SequenceMethodDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,5 +34,19 @@ public class TestController {
         serviceDemo2.serviceDemo2_1("str");
         serviceDemo2.serviceDemo2_2("str");
         return "test";
+    }
+    @RequestMapping("/aaa")
+    public String aaa(){
+        return "aaa";
+    }
+    @RequestMapping("/bbb")
+    public String bbb(String a ,String b ){
+        serviceDemo2.serviceDemo2_1(a);
+        serviceDemo3.serviceDemo3();
+        serviceDemo1.serviceDemo1();
+        serviceDemo2.serviceDemo2();
+        serviceDemo2.serviceDemo2_1("str");
+        serviceDemo2.serviceDemo2_2("str");
+        return "aaaa";
     }
 }

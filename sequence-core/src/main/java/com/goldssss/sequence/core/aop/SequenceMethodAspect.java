@@ -52,7 +52,7 @@ public class SequenceMethodAspect {
         methodBefore.setShortName(joinPoint.getSignature().getDeclaringTypeName().substring(joinPoint.getSignature().getDeclaringTypeName().lastIndexOf(".")+1));
         List<Class> paramsTypeList = new ArrayList<>();
         for (Object o :joinPoint.getArgs()){
-            paramsTypeList.add(o.getClass());
+            paramsTypeList.add(o==null?null:o.getClass());
         }
         methodBefore.setParamsType(paramsTypeList);
         sequenceMethodDTOList.add(methodBefore);
@@ -142,7 +142,8 @@ public class SequenceMethodAspect {
         if (CollectionUtils.isNotEmpty(classList)){
             for (int i=0;i<classList.size();i++){
                 Class clazz = classList.get(i);
-                params.append(clazz.getName().substring(clazz.getName().lastIndexOf(".")+1));
+                String clazzName = clazz==null? "null": clazz.getName();
+                params.append(clazzName.substring(clazzName.lastIndexOf(".")+1));
                 if (classList.size()!=1 && i!=classList.size()-1){
                     params.append(",");
                 }
