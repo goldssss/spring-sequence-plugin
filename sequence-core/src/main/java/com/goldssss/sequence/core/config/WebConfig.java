@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 @EnableWebMvc
 @Configuration
-@ComponentScan("com.goldssss.sequence.core")
+@ComponentScan("com.goldssss.sequence.core.controller")
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
