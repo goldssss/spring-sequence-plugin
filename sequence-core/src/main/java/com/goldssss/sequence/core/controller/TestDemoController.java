@@ -14,4 +14,9 @@ public class TestDemoController {
     public String test(){
         return "template";
     }
+
+    @RequestMapping("/list")
+    public String list(){
+        return "sequenceList";
+    }
 }
