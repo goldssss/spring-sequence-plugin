@@ -8,14 +8,33 @@
 <div id="app">
     <el-container>
 
-        <el-header>头部信息</el-header>
-        <el-container>
-            <el-aside>列表</el-aside>
+        <el-header width="10%">头部信息</el-header>
+        <el-container width="80%">
+            <el-aside>
+                <el-menu default-active="2"
+                         class="el-menu-vertical-demo"
+                         @open="handleOpen"
+                         @close="handleClose">
+                    <el-submenu index="1">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>类名1</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item index="1-1">方法1</el-menu-item>
+                            <el-menu-item index="1-2">方法2</el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+            <el-main>
+                <iframe src="http://localhost:8888/sequence/TestController/test()" width="100%" height="800">
 
-            <el-main>时序图详情</el-main>
+                </iframe>
+            </el-main>
         </el-container>
 
-        <el-footer>底部信息</el-footer>
+        <el-footer width="10%">底部信息</el-footer>
 
     </el-container>
 </div>
@@ -27,6 +46,11 @@
         el: '#app',
         data: function() {
             return { visible: false }
+        },
+        methods:{
+            alert: function () {
+                alert(1);
+            }
         }
     })
 </script>
