@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="/static/js/webfont.js"></script>
+    <script src="/static/js/snap.svg-min.js"></script>
+    <script src="/static/js/underscore-min.js"></script>
+    <script src="/static/js/sequence-diagram-min.js"></script>
+    <script src="/static/js/jquery-1.4.1.min.js"></script>
 </head>
 <body>
 <div id="app">
@@ -24,7 +29,12 @@
                             <el-menu-item index="1-1">
                                 <router-link to="/sequence/TestController/test()">TestController</router-link>
                             </el-menu-item>
-                            <el-menu-item index="1-2">方法2</el-menu-item>
+                            <el-menu-item index="1-2">
+                                <router-link to="/sequence/TestController/aaa">aaa</router-link>
+                            </el-menu-item>
+                            <el-menu-item index="1-3">
+                                <router-link to="/sequence/TestController/bbb(a,b)">bbb</router-link>
+                            </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
@@ -43,16 +53,27 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script>
-    var sequence={ template:'<div><iframe src="/sequence/TestController/test()" width="100%" height="800px"></div>'}
+    var sequence={
+        template:'<div><h2>{{$route.params.clazz}}.{{$route.params.method}}</h2></div>',
+        watch: {
+            '$route' (to, from) {
+               vm.uri=path;
+            }
+        }
+    }
 
-    var routes = [
-        { path: '/sequence/:clazz/:method', component: sequence }
-        ]
+    var routes = [{
+        path: '/sequence/:clazz/:method',
+        component: sequence
+    }]
     var router = new VueRouter({routes})
-    new Vue({
+    var vm = new Vue({
         el: '#app',
         data: function() {
-            return { visible: false }
+            return {
+                visible: false ,
+                uri: ''
+            }
         },
         methods:{
             alert: function () {
@@ -60,6 +81,6 @@
             }
         },
         router
-    }).$mount('#app')
+    })
 </script>
 </html>
