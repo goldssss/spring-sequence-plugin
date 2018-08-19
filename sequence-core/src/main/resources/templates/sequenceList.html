@@ -54,7 +54,14 @@
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script>
     var sequence={
-        template:'<div><h2>{{$route.params.clazz}}.{{$route.params.method}}</h2></div>',
+        template:`
+         <body>
+            <textarea id="sequenceContext" hidden="hidden">
+                {{sequenceContext}}
+            </textarea>
+            <div id="diagram">
+            </div>
+         </body>`,
         watch: {
             '$route' (to, from) {
                vm.uri=path;
@@ -72,7 +79,20 @@
         data: function() {
             return {
                 visible: false ,
-                uri: ''
+                uri: '',
+                sequenceContext:'    title:TestController.test()\n' +
+                    'TestController->ServiceDemo3:serviceDemo3()\n' +
+                    'ServiceDemo3->ServiceDemo4:serviceDemo4(null,Integer)\n' +
+                    'ServiceDemo4-->ServiceDemo3:\n' +
+                    'ServiceDemo3-->TestController:String\n' +
+                    'TestController->ServiceDemo1:serviceDemo1()\n' +
+                    'ServiceDemo1-->TestController:\n' +
+                    'TestController->ServiceDemo2:serviceDemo2()\n' +
+                    'ServiceDemo2-->TestController:\n' +
+                    'TestController->ServiceDemo2:serviceDemo2_1(String)\n' +
+                    'ServiceDemo2-->TestController:\n' +
+                    'TestController->ServiceDemo2:serviceDemo2_2(String)\n' +
+                    'ServiceDemo2-->TestController:String\n'
             }
         },
         methods:{
@@ -82,5 +102,9 @@
         },
         router
     })
+</script>
+<script>
+    var diagram = Diagram.parse($("#sequenceContext").val());
+    diagram.drawSVG("diagram", {theme: 'simple'});
 </script>
 </html>
