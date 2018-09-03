@@ -16,17 +16,10 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan("com.goldssss.sequence.core.controller")
 public class WebConfig implements WebMvcConfigurer {
 
-    @Bean
-    public ViewResolver seqViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/templates/");
-        resolver.setSuffix(".html");
-        return resolver;
-    }
-
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable(); //配置静态文件处理
+        //配置静态文件处理
+        configurer.enable();
     }
 
     @Override

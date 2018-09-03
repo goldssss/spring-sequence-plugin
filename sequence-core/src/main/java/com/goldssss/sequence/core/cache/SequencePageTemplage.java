@@ -5,11 +5,11 @@ public class SequencePageTemplage {
             "<html lang=\"en\">\n" +
             "<head>\n" +
             "    <meta charset=\"UTF-8\">\n" +
-            "<script src=\"../../static/js/webfont.js\"></script>\n" +
-            "<script src=\"../../static/js/snap.svg-min.js\"></script>\n" +
-            "<script src=\"../../static/js/underscore-min.js\"></script>\n" +
-            "<script src=\"../../static/js/sequence-diagram-min.js\"></script>\n" +
-            "<script src=\"../../static/js/jquery-1.4.1.min.js\"></script>"+
+            "<script src=\"/static/js/webfont.js\"></script>\n" +
+            "<script src=\"/static/js/snap.svg-min.js\"></script>\n" +
+            "<script src=\"/static/js/underscore-min.js\"></script>\n" +
+            "<script src=\"/static/js/sequence-diagram-min.js\"></script>\n" +
+            "<script src=\"/static/js/jquery-1.4.1.min.js\"></script>"+
             "<title>${title}</title>\n" +
             "</head>\n" +
             "<body>\n" +

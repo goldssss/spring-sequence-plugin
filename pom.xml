@@ -10,7 +10,6 @@
         <module>sequence-web</module>
         <module>sequence-service</module>
         <module>sequence-core</module>
-        <module>sequence-config</module>
     </modules>
     <packaging>pom</packaging>
 
