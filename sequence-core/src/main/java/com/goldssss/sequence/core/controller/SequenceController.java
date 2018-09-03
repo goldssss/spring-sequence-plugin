@@ -3,11 +3,20 @@ package com.goldssss.sequence.core.controller;
 import com.goldssss.sequence.core.cache.SequenceCache;
 import com.goldssss.sequence.core.cache.SequencePageTemplage;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
 @RestController
+@RequestMapping("/sequence")
 public class SequenceController {
+
+    @PostMapping("/list")
+    public Set<String> list(){
+        return SequenceCache.sequenceContextTreeMap.keySet();
+    }
 
     @RequestMapping("/sequence")
     public String sequence(){
