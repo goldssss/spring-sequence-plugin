@@ -19,7 +19,7 @@
             <el-aside>
                 <el-menu class="el-menu-vertical-demo">
                     <el-menu-item v-for="method in methodList" index="1-1">
-                        <router-link to="/sequence/TestController/test()">{{method}}</router-link>
+                        <router-link to="/sequence/">{{method}}</router-link>
                     </el-menu-item>
                 </el-menu>
             </el-aside>
@@ -50,10 +50,17 @@
             initList: function () {
                 var url  = "/sequence/list";
                 axios.post(url).then(function(result) {
-                    vm._data.methodList=result.data;
-                    console.log(result.data)
+                    result.data.forEach(function (item) {
+                        console.log(item)
+                        var method = "<router-link to=/sequence/>"+item+"</router-link>";
+                        vm._data.methodList.push(method);
+                    })
+                    console.log(vm._data.methodList)
                 })
             }
+        },
+        render:{
+
         },
         router
     })
