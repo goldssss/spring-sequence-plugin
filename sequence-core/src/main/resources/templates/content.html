@@ -19,9 +19,9 @@
             <el-aside>
                 <el-menu class="el-menu-vertical-demo">
                     <el-menu-item v-for="method in methodList" index="1-1">
-                        <ul>
-                            <li v-for="item in methodList">{{item}}</li>
-                        </ul>
+                        <menu-ul>
+                            <menu-li v-for="item in methodList">{{item}}</menu-li>
+                        </menu-ul>
                     </el-menu-item>
                 </el-menu>
             </el-aside>
@@ -40,33 +40,47 @@
         path: '/sequence/:clazz/:method',
         component: sequence
     }]
-    var router = new VueRouter({routes})
-    var vm = new Vue({
+    var router = new VueRouter({routes});
+
+    var menu = new Vue.component('menu-ul', {
+        render: function(createElement) {
+            var self = this;
+            //使用字符串生成文本节点
+            return createElement('menu-ul', '文本');
+            // return createElement('div', [//由createElement函数构建而成的数组
+            //     createElement('h1', '主标'),//createElement函数返回VNode对象
+            //     createElement('h2', '副标')
+            // ]);
+        }
+    });
+
+    new Vue({
         el: '#app',
-        data: function() {
-            return {
-                methodList:[]
-            }
+        data: {
+            methodList:[]
         },
-        render:function(createElement){
-            console.log(this.methodList)
-            return createElement('ul',this.methodList.forEach(function (item) {
-                return createElement('li',item);
-            }))
+        components:{
+            menu
         },
         methods:{
             initList: function () {
+                var self=this;
                 var url  = "/sequence/list";
                 axios.post(url).then(function(result) {
                     result.data.forEach(function (item) {
                         var method = "<router-link to=/sequence/>"+item+"</router-link>";
-                        vm._data.methodList.push(method);
+                        console.log(self)
+                        console.log(self.data)
+                        self.methodList.push(method);
                     })
                 })
             }
         },
+        mounted(){
+            var self=this;
+            self.initList();
+        },
         router
     })
-    vm.initList()
 </script>
 </html>
