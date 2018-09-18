@@ -65,8 +65,6 @@
                 axios.post(url).then(function(result) {
                     result.data.forEach(function (item) {
                         var method = "<router-link to=/sequence/>"+item+"</router-link>";
-                        console.log(self)
-                        console.log(self.data)
                         self.methodList.push(method);
                     })
                 })
